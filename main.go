@@ -10,8 +10,8 @@ import (
     "github.com/gin-gonic/gin"
 )
 
-const CSV_ERROR_MESSAGE = "There was an error when attempting to read the csv file. Please try again later."
-const FILE_PATH = "covid.csv"
+const CsvErrorMessage = "There was an error when attempting to read the csv file. Please try again later."
+const FilePath = "covid.csv"
 
 type Country struct {
     Name   string  `json:"country_name"`
@@ -23,12 +23,12 @@ type Country struct {
 func csvError(context *gin.Context, err error) {
     log.Println(err)
     context.JSON(500, gin.H{
-        "message": CSV_ERROR_MESSAGE,
+        "message": CsvErrorMessage,
     })
 }
 
 func covidHandler(context *gin.Context) {
-    file, err := os.Open(FILE_PATH)
+    file, err := os.Open(FilePath)
     log.Println("%T", err)
     if err != nil {
         csvError(context, err)
