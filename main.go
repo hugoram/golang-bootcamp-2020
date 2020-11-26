@@ -2,11 +2,12 @@ package main
 
 import (
     "encoding/csv"
-    "github.com/gin-gonic/gin"
     "io"
     "log"
     "os"
     "strconv"
+
+    "github.com/gin-gonic/gin"
 )
 
 const CSV_ERROR_MESSAGE = "There was an error when attempting to read the csv file. Please try again later."
