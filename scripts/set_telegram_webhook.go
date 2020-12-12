@@ -6,28 +6,21 @@ import (
     "io/ioutil"
     "log"
     "net/http"
-    "os"
 
-    "github.com/joho/godotenv"
+    _ "github.com/joho/godotenv/autoload"
+
+    "golang-bootcamp-2020/config"
 )
 
 func main() {
-    err := godotenv.Load()
-    if err != nil {
-        log.Fatal("Could not load .env file")
-    }
-
-    telegramUrl := "https://api.telegram.org/bot" + os.Getenv("TOKEN") + "/setWebhook"
-    botUrl := os.Getenv("APP_URL") + "/telegram"
-
     reqBody, err := json.Marshal(map[string]string{
-        "url": botUrl,
+        "url": config.AppURL + "/" + config.TelegramToken,
     })
     if err != nil {
         log.Fatal(err)
     }
 
-    resp, err := http.Post(telegramUrl, "application/json", bytes.NewBuffer(reqBody))
+    resp, err := http.Post(config.TelegramApiURL+"/setWebhook", "application/json", bytes.NewBuffer(reqBody))
     if err != nil {
         log.Fatal(err)
     }

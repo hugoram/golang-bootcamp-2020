@@ -2,13 +2,11 @@ package router
 
 import (
     "github.com/gin-gonic/gin"
+
+    "golang-bootcamp-2020/config"
+    "golang-bootcamp-2020/handler"
 )
 
-func telegramHandler(context *gin.Context) {
-    var data = []int{1, 2, 3}
-    context.JSON(200, data)
-}
-
 func NewRouter(engine *gin.Engine) {
-    engine.GET("/telegram", telegramHandler)
+    engine.POST("/"+config.TelegramToken, handler.TelegramHandler)
 }
