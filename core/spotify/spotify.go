@@ -51,7 +51,7 @@ func GetTracks(search string) SpotifySearchResult {
     token := getToken()
 
     client := &http.Client{}
-    req, _ := http.NewRequest("GET", config.SpotifyApiURL+"/search?type=track&q="+search, nil)
+    req, _ := http.NewRequest("GET", config.SpotifyApiURL+"/search?type=track&q="+url.QueryEscape(search), nil)
     req.Header.Set("Authorization", "Bearer "+token)
     resp, err := client.Do(req)
     if err != nil {
