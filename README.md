@@ -50,7 +50,7 @@ Once running, try searching for a song using your bot's handle inside telegram, 
 
 #### Other notes
 
-Be aware that your bot will only display results for those tracks that have a preview url. Spotify does not provide previews for all available tracks, maybe for legal reasons, so don't be surprised if you don't get any result when seraching for the Beatles.
+Be aware that your bot will only display results for those tracks that have a preview url. Spotify does not provide previews for all available tracks, maybe for legal reasons, so don't be surprised if you don't get any result when searching for the Beatles.
 
 ## Future improvements
 
