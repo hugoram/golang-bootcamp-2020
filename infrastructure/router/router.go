@@ -4,9 +4,9 @@ import (
     "github.com/gin-gonic/gin"
 
     "golang-bootcamp-2020/config"
-    "golang-bootcamp-2020/handler"
+    "golang-bootcamp-2020/controller"
 )
 
 func NewRouter(engine *gin.Engine) {
-    engine.POST("/"+config.TelegramToken, handler.TelegramHandler)
+    engine.POST("/"+config.TelegramToken, controller.Telegram)
 }

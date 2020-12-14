@@ -46,7 +46,7 @@ func getToken() string {
     return auth.AccessToken
 }
 
-func GetTracks(search string) SpotifySearchResult {
+func GetTracks(search string) []model.SpotifyTrack {
     var searchResult SpotifySearchResult
     token := getToken()
 
@@ -65,5 +65,5 @@ func GetTracks(search string) SpotifySearchResult {
         log.Println(jsonErr)
     }
 
-    return searchResult
+    return searchResult.Tracks.Items
 }
