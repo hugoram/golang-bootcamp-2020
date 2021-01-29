@@ -1,130 +1,60 @@
-# Golang Bootcamp
+# Telegram Spotify Music Preview Bot
 
-## Introduction
+Proof of concept of a telegram bot that can search for songs using Spotify's API and return results that can be previewed inside Telegram.
 
-Thank you for participating in the Golang Bootcamp course!
-Here, you'll find instructions for completing your certification.
+You can check it out, just open telegram and start typing `@wizelinebot something` inside any chat, it works as an inline bot similar to @gif or @pic.
 
-## The Challenge
+_(If you don't get a response soon try sending a direct message to `@wizelinebot`, this may be due to the bot not being publicly listed since it's just a POC, after that try using the inline mode again in the chat of your choosing)_
 
-The purpose of the challenge is for you to demonstrate your Golang skills. This is your chance to show off everything you've learned during the course!!
+![Preview](preview.png)
 
-You will build and deliver a whole Golang project on your own. We don't want to limit you by providing some fill-in-the-blanks exercises, but instead request you to build it from scratch.
-We hope you find this exercise challenging and engaging.
+## Running your own bot instance
 
-The goal is to build a REST API which must include:
+#### Requirements
 
-- An endpoint for reading from an external DB or API
-  - Write the information in a CSV file
-- An endpoint for reading the CSV
-  - Display the information as a JSON
-- Unit testing for the principal logic
-- Follow conventions, best practices
-- Clean architecture
+-   Go runtime installed and configured
+-   Spotify developer account (https://developer.spotify.com)
+-   Telegram bot created with inline mode enabled (https://core.telegram.org/bots/api)
 
-## Requirements
+Additionally, you can use [`ngrok`](https://ngrok.com) for local development since Telegram only accepts endpoints that serve via https.
 
-These are the main requirements we will evaluate:
+#### Environment variables
 
-- Use all that you've learned in the course:
-  - Best practices
-  - Go basics
-  - HTTP handlers
-  - Error handling
-  - Structs and interfaces
-  - Clean architecture
-  - Unit testing
-  - CSV file fetching
+If you don't want to declare system wide environment variables, you can create a `.env` file in the root of your project, use the provided `.env.example` file as a guide to what variables need to be declared.
 
-## Getting Started
+-   `APP_URL`: The base URL where your app will be running. Be sure to serve https otherwise telegram won't send any update to your app. If you are using `ngrok` for local development, please use the https url that ngrok provides.
 
-To get started, follow these steps:
+-   `TELEGRAM_TOKEN`: You'll get this token after you have followed Telegram's guide to creating a bot. This token not only is the way to authenticate your application with Telegram, it also will be used to define the endpoint to receive updates according to Telegram's best practices.
 
-1. Fork this project
-1. Make your project private
-1. Grant your mentor access to the project
-1. Commit periodically
-1. Apply changes according to the mentor's comments
-1. Have fun!
+-   `SPOTIFY_AUTH`: Once you created your developer account and created an app in Spotify, you'll have access to a client id and client secret. To generate the value stored in this variable just append your client id and your client secret separated by a colon, e.g. `YOUR_ID:YOUR_SECRET`, afterwards convert that string to a base64 value. This is the standard way to do http basic authorization, the alternative way would have been to provide both client id and secret and let the app do the rest of the calculation, but since it's a static value I decided to just precompute it and provide it here.
 
-## Deliverables
+#### Setting the webhook for Telegram
 
-We provide the delivery dates so you can plan accordingly; please take this challenge seriously and try to make progress constantly.
+All telegram updates will be sent to the endpoint of your choosing. This app provides an easy way to set it up by using a script. After you have configured your environment variables just run the following command in the app's base directory:
 
-It’s worth mentioning that you’ll ONLY get feedback from the review team for your first deliverable, so you will have a chance to fix or improve the code based on our suggestions.
+```
+go run scripts/set_telegram_webhook.go
+```
 
-For the final deliverable, we will provide some feedback, but there is no extra review date. If you are struggling with something, contact your mentor and peers to get help on time. Feel free to use the slack channel available.
+If you prefer you can set the webhook endpoint manually by sending a `POST` request to the Telegram API, just follow the instructions at https://core.telegram.org/bots/api#setwebhook
 
-## First Deliverable (due November 22th 23:59PM)
+#### Building and running your app
 
-Based on the self-study material and mentorship covered until this deliverable, we suggest you perform the following:
+After setting your environment variables and the telegram webhook you're good to go, just run this command in your app's base directory:
 
-- Select architecture
-- Read a CSV or DB
-- Handle Errors for CSV/DB (not valid, missing, incorrect connection)
-- Use best practices
+```
+go build && go run main.go
+```
 
-> Note: what’s listed in this deliverable is just for guidance and to help you distribute your workload; you can deliver more or fewer items if necessary. However, if you deliver fewer items at this point, you have to cover the remaining tasks in the next deliverable.
+Once running, try searching for a song using your bot's handle inside telegram, e.g. `@yourbotname something`. Choose a result from the list and you'll provide a message with the song preview and link to spotify in any chat you want.
 
-## Final Deliverable (due December 13th 23:59PM)
+#### Other notes
 
-- Store read CSV/DB in a structure
-- Loop structure and print data
-- Send to own API data read
-- Add unit testing
-- Refactor
+Be aware that your bot will only display results for those tracks that have a preview url. Spotify does not provide previews for all available tracks, maybe for legal reasons, so don't be surprised if you don't get any result when searching for the Beatles.
 
-> Important: this is the final deliverable, so all the requirements must be included. We will give you feedback and you will have 3 days more to apply changes. On the third day, we will stop receiving changes at 11:00 am.
+## Future improvements
 
-## Submitting the deliverables
-
-For submitting your work, you should follow these steps:
-
-1. Create a pull request with your code, targeting the master branch of the repository golang-bootcamp-2020.
-2. Fill this [form](https://forms.gle/ogQtHBk6DtZ5yKUM9) including the PR’s url
-3. Stay tune for feedback
-4. Do the changes according to your mentor's comments
-
-## Documentation
-
-### Must to learn
-
-- [Go Tour](https://tour.golang.org/welcome/1)
-- [Go basics](https://www.youtube.com/watch?v=C8LgvuEBraI)
-- [Git](https://www.youtube.com/watch?v=USjZcfj8yxE)
-- [Tool to practice Git online](https://learngitbranching.js.org/)
-- [Effective Go](https://golang.org/doc/effective_go.html)
-- [How to write code](https://golang.org/doc/code.html)
-- [Go by example](https://gobyexample.com/)
-- [Go cheatsheet](http://cht.sh/go/:learn)
-- [Any talk by Rob Pike](https://www.youtube.com/results?search_query=rob+pike)
-- [The Go Playground](https://play.golang.org/)
-
-### Self-Study Material
-
-- [Golang Docs](https://golang.org/doc/)
-- [Constants](https://www.youtube.com/watch?v=lHJ33KvdyN4)
-- [Variables](https://www.youtube.com/watch?v=sZoRSbokUE8)
-- [Types](https://www.youtube.com/watch?v=pM0-CMysa_M)
-- [Functions](https://www.youtube.com/watch?v=feU9DQNoKGE)
-- [Error Handling](https://www.youtube.com/watch?v=26ahsUf4sF8)
-- [Modules](https://www.youtube.com/watch?v=Z1VhG7cf83M)
-  - [Part 1 and 2](https://blog.golang.org/using-go-modules)
-- [Go tools](https://dominik.honnef.co/posts/2014/12/an_incomplete_list_of_go_tools/)
-- [More Go tools](https://dev.to/plutov/go-tools-are-awesome-bom)
-- [Clean Architecture](https://medium.com/@manakuro/clean-architecture-with-go-bce409427d31)
-- [For Loops](https://www.youtube.com/watch?v=0A5fReZUdRk)
-- [Arrays and Slices](https://www.youtube.com/watch?v=d_J9jeIUWmI)
-- [Conditional statements: If](https://www.youtube.com/watch?v=QgBYnz6I7p4)
-- [Multiple options conditional: Switch](https://www.youtube.com/watch?v=hx9iHend6jM)
-- [Maps](https://www.youtube.com/watch?v=p4LS3UdgJA4)
-- [Structures](https://www.youtube.com/watch?v=w7LzQyvriog)
-- [Structs and Functions](https://www.youtube.com/watch?v=RUQADmZdG74)
-- [Pointers](https://tour.golang.org/moretypes/1)
-- [Interfaces](https://tour.golang.org/methods/9)
-- [Interfaces](https://gobyexample.com/interfaces)
-- [Methods](https://www.youtube.com/watch?v=nYWa5ECYsTQ)
-- [Failed requests handling](http://www.metabates.com/2015/10/15/handling-http-request-errors-in-go/)
-- [Packages](https://www.youtube.com/watch?v=sf7f4QGkwfE)
-- [Unit testing](https://golang.org/pkg/testing/)
-- [Functions as values](https://tour.golang.org/moretypes/24)
+-   Ability to respond to direct messages, at least to provide an instruction to users so that they know they should use inline mode only.
+-   More music streaming services options to provide a wider array of available tracks.
+-   Add preview image and more information to inline results.
+-   Include tracks that do not have a preview url, at least to provide a link to the track inside the music service.
